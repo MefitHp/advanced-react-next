@@ -1,7 +1,9 @@
 //Libraries
-import React from "react";
+import React, { useEffect } from "react";
 import Link from "next/link";
 import styled from "@emotion/styled";
+import Nprogress from "nprogress";
+import Router from "next/router";
 
 //Components
 import Nav from "./Nav";
@@ -45,6 +47,11 @@ const StyledHeader = styled.header`
 `;
 
 const Header = () => {
+  useEffect(() => {
+    Router.onRouteChangeStart = () => Nprogress.start();
+    Router.onRouteChangeComplete = () => Nprogress.done();
+  });
+
   return (
     <StyledHeader>
       <div className="bar">

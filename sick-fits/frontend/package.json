@@ -8,7 +8,6 @@
     "build": "next build",
     "start": "next start",
     "test": "NODE_ENV=test jest --watch",
-    "test-win": "SET NODE_ENV=test&& jest --watch",
     "heroku-postbuild": "next build"
   },
   "author": "",
@@ -39,7 +38,7 @@
     "react-dom": "^16.5.2",
     "react-stripe-checkout": "^2.6.3",
     "react-transition-group": "^2.5.0",
-    "styled-components": "^4.4.1",
+    "styled-components": "^3.4.9",
     "waait": "^1.0.2"
   },
   "devDependencies": {
@@ -59,8 +58,7 @@
     ],
     "transform": {
       "\\.(gql|graphql)$": "jest-transform-graphql",
-      ".*": "babel-jest",
-      "^.+\\.js?$": "babel-jest"
+      ".*": "babel-jest"
     }
   },
   "//": "This is our babel config, I prefer this over a .babelrc file",
@@ -69,11 +67,29 @@
       "development": {
         "presets": [
           "next/babel"
+        ],
+        "plugins": [
+          [
+            "styled-components",
+            {
+              "ssr": true,
+              "displayName": true
+            }
+          ]
         ]
       },
       "production": {
         "presets": [
           "next/babel"
+        ],
+        "plugins": [
+          [
+            "styled-components",
+            {
+              "ssr": true,
+              "displayName": true
+            }
+          ]
         ]
       },
       "test": {
@@ -84,6 +100,15 @@
               "preset-env": {
                 "modules": "commonjs"
               }
+            }
+          ]
+        ],
+        "plugins": [
+          [
+            "styled-components",
+            {
+              "ssr": true,
+              "displayName": true
             }
           ]
         ]

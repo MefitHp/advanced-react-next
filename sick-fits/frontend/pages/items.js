@@ -1,9 +1,10 @@
 import React from "react";
 import Link from "next/link";
-const about = () => {
+
+const Items = () => {
   return (
     <div>
-      About <br />
+      Items <br />
       <Link href="/">
         <a>Home</a>
       </Link>
@@ -11,4 +12,4 @@ const about = () => {
   );
 };
 
-export default about;
+export default Items;
