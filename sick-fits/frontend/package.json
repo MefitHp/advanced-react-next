@@ -25,6 +25,7 @@
     "emotion-theming": "^10.0.19",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.15.1",
+    "formik": "^2.0.4",
     "graphql": "^14.5.8",
     "graphql-tag": "^2.10.1",
     "lodash.debounce": "^4.0.8",

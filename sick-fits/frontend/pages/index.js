@@ -1,16 +1,11 @@
-import React, { useEffect } from "react";
-import Link from "next/link";
+import React from "react";
+import Items from "./Items";
 
 const Home = () => {
-  useEffect(() => {
-    console.log("Component Loaded");
-  }, []);
   return (
     <div>
-      <h2>Hello from NextJS</h2>
-      <Link href="/about">
-        <a>Go to about</a>
-      </Link>
+      <h1>Hello from NextJS</h1>
+      <Items />
     </div>
   );
 };
