@@ -1,5 +1,5 @@
 import React from "react";
-import Link from "next/link";
+// import Link from "next/link";
 import { useQuery } from "@apollo/react-hooks";
 import gql from "graphql-tag";
 import Item from "../components/Item";
@@ -29,12 +29,12 @@ const Items = () => {
     max-width: ${props => props.theme.maxWidth};
     margin: 0 auto;
   `;
-  const { loading, data, error } = useQuery(LIST_ITEMS);
+  const { loading, data } = useQuery(LIST_ITEMS);
 
-  if (loading) return <p>Loading ...</p>;
   return (
     <Center>
       <ItemList>
+        {loading && <p>Items are loading</p>}
         {data && data.items.map(item => <Item key={item.id} {...item} />)}
       </ItemList>
     </Center>

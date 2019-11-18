@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useMutation } from "@apollo/react-hooks";
 import gql from "graphql-tag";
 import Router from "next/router";
@@ -35,45 +35,47 @@ const initialValues = {
 };
 
 const CreateItem = () => {
-  const [isSubmitting, setSubmitting] = useState(false);
-  const uploadFile = (e, setFieldValue) => {
+  const [createItem, { loading: isSubmitting, data, error }] = useMutation(
+    CREATE_ITEM_MUTATION
+  );
+
+  const uploadFile = async (e, setFieldValue) => {
     const files = e.target.files;
     const data = new FormData();
     data.append("file", files[0]);
     data.append("upload_preset", "sickfits");
-    // const res = await fetch(
-    //   "https://api.cloudinary.com/v1_1/wesbostutorial/image/upload",
-    //   {
-    //     method: "POST",
-    //     body: data
-    //   }
-    // );
-    // const file = await res.json();
-    // this.setState({
-    //   image: file.secure_url,
-    //   largeImage: file.eager[0].secure_url
-    // });
+
+    return fetch("https://api.cloudinary.com/v1_1/mefitdev/image/upload", {
+      method: "POST",
+      body: data
+    })
+      .then(async res => {
+        const file = await res.json();
+        setFieldValue("image", file.secure_url);
+        setFieldValue("largeImage", file.eager[0].secure_url);
+      })
+      .catch(err => console.error(err));
   };
+
+  console.log(isSubmitting, data);
   return (
-    <Formik initialValues={initialValues}>
-      {({ values, setFieldValue }) => {
+    <Formik
+      initialValues={initialValues}
+      onSubmit={async values => {
+        console.log(values);
+        const res = await createItem({ variables: values });
+        console.log(res);
+        Router.push({
+          pathname: "/item",
+          query: { id: res.data.createItem.id }
+        });
+      }}
+    >
+      {({ values, handleSubmit, setFieldValue }) => {
         return (
-          <Form
-            data-test="form"
-            onSubmit={async e => {
-              e.preventDefault();
-              setSubmitting(true);
-              //   const res = await createItem();
-              // change them to the single item page
-              //   console.log(res);
-              //   Router.push({
-              //     pathname: "/item",
-              //     query: { id: res.data.createItem.id }
-              //   });
-            }}
-          >
+          <Form data-test="form" onSubmit={handleSubmit}>
             <fieldset disabled={isSubmitting} aria-busy={isSubmitting}>
-              {/* <Error error={error} /> */}
+              <Error error={error} />
               <label htmlFor="file">
                 Image
                 <Field
@@ -112,7 +114,9 @@ const CreateItem = () => {
                 />
               </label>
             </fieldset>
-            <button type="submit">Submit</button>
+            <button type="submit" disabled={isSubmitting}>
+              Submit
+            </button>
           </Form>
         );
       }}
